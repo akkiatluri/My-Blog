@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Data Science Blog</title>
+    <link>/</link>
+    <description>Recent content on Data Science Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Wed, 04 Oct 2017 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>Plotting in R</title>
+      <link>/2017/10/plotting/</link>
+      <pubDate>Wed, 04 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/10/plotting/</guid>
+      <description>library(dplyr)library(Lahman)library(ggplot2)library(ggiraph)Histogramdf&amp;lt;-Master%&amp;gt;%filter(!is.na(weight))%&amp;gt;%select(weight)plot = ggplot()+geom_histogram(data=df,aes(x=weight),color=&amp;quot;white&amp;quot;,fill=&amp;quot;blue&amp;quot;,bins=25)+ggtitle(&amp;quot;Baseball player weights&amp;quot;)plotBarplotdf&amp;lt;-Teams%&amp;gt;%filter(yearID==1980)%&amp;gt;%select(teamID,HR)plot2&amp;lt;-ggplot()+geom_bar(data = df,aes(x=reorder(teamID,HR),y=HR),stat = &amp;quot;identity&amp;quot;,color=&amp;quot;blue&amp;quot;,fill=&amp;quot;white&amp;quot;)+coord_flip()plot2Bar plot with ggiraphdf&amp;lt;-Teams%&amp;gt;%filter(yearID==1980)%&amp;gt;%select(name,HR)%&amp;gt;%arrange(desc(HR))df$name = factor(df$name,levels=df$name)g&amp;lt;-ggplot()+geom_bar_interactive(data=df,aes(x=name,y=HR,tooltip=HR,data_id=name),stat = &amp;quot;identity&amp;quot;,color=&amp;quot;white&amp;quot;,fill=&amp;quot;black&amp;quot;)+coord_flip()+ggtitle(&amp;quot;1980 Team Homeruns&amp;quot;)+xlab(&amp;quot;Team Name&amp;quot;)+ylab(&amp;quot;Homeruns&amp;quot;)ggiraph(code = print(g),hover_css = &amp;quot;fill-opacity:.3;cursor:pointer;&amp;quot;){&#34;x&#34;:{&#34;html&#34;:&#34;\n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Milwaukee Brewers\n \n \n New York Yankees\n \n \n Boston Red Sox\n \n \n Baltimore Orioles\n \n \n Los Angeles Dodgers\n \n \n Atlanta Braves\n \n \n Detroit Tigers\n \n \n Oakland Athletics\n \n \n Toronto Blue Jays\n \n \n Texas Rangers\n \n \n Philadelphia Phillies\n \n \n Pittsburgh Pirates\n \n \n Kansas City Royals\n \n \n Montreal Expos\n \n \n Cincinnati Reds\n \n \n Chicago Cubs\n \n \n California Angels\n \n \n Seattle Mariners\n \n \n St.</description>
+    </item>
+    
+    <item>
+      <title>plotting</title>
+      <link>/2017/10/plotting/</link>
+      <pubDate>Wed, 04 Oct 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/10/plotting/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Baseball</title>
+      <link>/2017/09/rmarkdown/</link>
+      <pubDate>Fri, 15 Sep 2017 00:00:00 +0000</pubDate>
+      
+      <guid>/2017/09/rmarkdown/</guid>
+      <description>Baseball
+The packages required to run the codelibrary(Lahman)library(dplyr)Selecting a particular Column in the dataframenow , suppose we would like to see the homerun totals for the 1927 new york yankees. we could run the following code
+Batting%&amp;gt;%select(playerID,yearID,teamID,HR)%&amp;gt;%filter(teamID==&amp;quot;NYA&amp;quot; &amp;amp; yearID==1927)## playerID yearID teamID HR## 1 beallwa01 1927 NYA 0## 2 bengobe01 1927 NYA 0## 3 collipa01 1927 NYA 7## 4 combsea01 1927 NYA 6## 5 duganjo01 1927 NYA 2## 6 durstce01 1927 NYA 0## 7 gazelmi01 1927 NYA 0## 8 gehrilo01 1927 NYA 47## 9 giardjo01 1927 NYA 0## 10 grabojo01 1927 NYA 0## 11 hoytwa01 1927 NYA 0## 12 koenima01 1927 NYA 3## 13 lazzeto01 1927 NYA 18## 14 meusebo01 1927 NYA 8## 15 moorewi01 1927 NYA 1## 16 morehra01 1927 NYA 1## 17 paschbe01 1927 NYA 2## 18 pennohe01 1927 NYA 0## 19 pipgrge01 1927 NYA 1## 20 ruethdu01 1927 NYA 1## 21 ruthba01 1927 NYA 60## 22 shawkbo01 1927 NYA 0## 23 shockur01 1927 NYA 0## 24 thomamy01 1927 NYA 0## 25 weraju01 1927 NYA 1Arranging a Column in Descending OrderNow,the following code gives the list of all the players that have scored more than 40 homeruns from New York Yankees Team.</description>
+    </item>
+    
+  </channel>
+</rss>

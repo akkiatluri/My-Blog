@@ -1,0 +1,646 @@
+
+
+  
+    
+  
+
+
+  
+
+
+
+
+  
+
+
+  
+
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Hugo 0.29 with theme Tranquilpeak 0.4.1-BETA">
+    <title>Plotting in R</title>
+    <meta name="author" content="Akhilesh Atluri">
+    <meta name="keywords" content="">
+
+    <link rel="icon" href="/favicon.png">
+    
+
+    
+    <meta name="description" content="library(dplyr)library(Lahman)library(ggplot2)library(ggiraph)Histogramdf&lt;-Master%&gt;%filter(!is.na(weight))%&gt;%select(weight)plot = ggplot()&#43;geom_histogram(data=df,aes(x=weight),color=&quot;white&quot;,fill=&quot;blue&quot;,bins=25)&#43;ggtitle(&quot;Baseball player weights&quot;)plotBarplotdf&lt;-Teams%&gt;%filter(yearID==1980)%&gt;%select(teamID,HR)plot2&lt;-ggplot()&#43;geom_bar(data = df,aes(x=reorder(teamID,HR),y=HR),stat = &quot;identity&quot;,color=&quot;blue&quot;,fill=&quot;white&quot;)&#43;coord_flip()plot2Bar plot with ggiraphdf&lt;-Teams%&gt;%filter(yearID==1980)%&gt;%select(name,HR)%&gt;%arrange(desc(HR))df$name = factor(df$name,levels=df$name)g&lt;-ggplot()&#43;geom_bar_interactive(data=df,aes(x=name,y=HR,tooltip=HR,data_id=name),stat = &quot;identity&quot;,color=&quot;white&quot;,fill=&quot;black&quot;)&#43;coord_flip()&#43;ggtitle(&quot;1980 Team Homeruns&quot;)&#43;xlab(&quot;Team Name&quot;)&#43;ylab(&quot;Homeruns&quot;)ggiraph(code = print(g),hover_css = &quot;fill-opacity:.3;cursor:pointer;&quot;){&#34;x&#34;:{&#34;html&#34;:&#34;\n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Milwaukee Brewers\n \n \n New York Yankees\n \n \n Boston Red Sox\n \n \n Baltimore Orioles\n \n \n Los Angeles Dodgers\n \n \n Atlanta Braves\n \n \n Detroit Tigers\n \n \n Oakland Athletics\n \n \n Toronto Blue Jays\n \n \n Texas Rangers\n \n \n Philadelphia Phillies\n \n \n Pittsburgh Pirates\n \n \n Kansas City Royals\n \n \n Montreal Expos\n \n \n Cincinnati Reds\n \n \n Chicago Cubs\n \n \n California Angels\n \n \n Seattle Mariners\n \n \n St.">
+    <meta property="og:description" content="library(dplyr)library(Lahman)library(ggplot2)library(ggiraph)Histogramdf&lt;-Master%&gt;%filter(!is.na(weight))%&gt;%select(weight)plot = ggplot()&#43;geom_histogram(data=df,aes(x=weight),color=&quot;white&quot;,fill=&quot;blue&quot;,bins=25)&#43;ggtitle(&quot;Baseball player weights&quot;)plotBarplotdf&lt;-Teams%&gt;%filter(yearID==1980)%&gt;%select(teamID,HR)plot2&lt;-ggplot()&#43;geom_bar(data = df,aes(x=reorder(teamID,HR),y=HR),stat = &quot;identity&quot;,color=&quot;blue&quot;,fill=&quot;white&quot;)&#43;coord_flip()plot2Bar plot with ggiraphdf&lt;-Teams%&gt;%filter(yearID==1980)%&gt;%select(name,HR)%&gt;%arrange(desc(HR))df$name = factor(df$name,levels=df$name)g&lt;-ggplot()&#43;geom_bar_interactive(data=df,aes(x=name,y=HR,tooltip=HR,data_id=name),stat = &quot;identity&quot;,color=&quot;white&quot;,fill=&quot;black&quot;)&#43;coord_flip()&#43;ggtitle(&quot;1980 Team Homeruns&quot;)&#43;xlab(&quot;Team Name&quot;)&#43;ylab(&quot;Homeruns&quot;)ggiraph(code = print(g),hover_css = &quot;fill-opacity:.3;cursor:pointer;&quot;){&#34;x&#34;:{&#34;html&#34;:&#34;\n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Milwaukee Brewers\n \n \n New York Yankees\n \n \n Boston Red Sox\n \n \n Baltimore Orioles\n \n \n Los Angeles Dodgers\n \n \n Atlanta Braves\n \n \n Detroit Tigers\n \n \n Oakland Athletics\n \n \n Toronto Blue Jays\n \n \n Texas Rangers\n \n \n Philadelphia Phillies\n \n \n Pittsburgh Pirates\n \n \n Kansas City Royals\n \n \n Montreal Expos\n \n \n Cincinnati Reds\n \n \n Chicago Cubs\n \n \n California Angels\n \n \n Seattle Mariners\n \n \n St.">
+    <meta property="og:type" content="blog">
+    <meta property="og:title" content="Plotting in R">
+    <meta property="og:url" content="/2017/10/plotting/">
+    <meta property="og:site_name" content="Data Science Blog">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Data Science Blog">
+    <meta name="twitter:description" content="library(dplyr)library(Lahman)library(ggplot2)library(ggiraph)Histogramdf&lt;-Master%&gt;%filter(!is.na(weight))%&gt;%select(weight)plot = ggplot()&#43;geom_histogram(data=df,aes(x=weight),color=&quot;white&quot;,fill=&quot;blue&quot;,bins=25)&#43;ggtitle(&quot;Baseball player weights&quot;)plotBarplotdf&lt;-Teams%&gt;%filter(yearID==1980)%&gt;%select(teamID,HR)plot2&lt;-ggplot()&#43;geom_bar(data = df,aes(x=reorder(teamID,HR),y=HR),stat = &quot;identity&quot;,color=&quot;blue&quot;,fill=&quot;white&quot;)&#43;coord_flip()plot2Bar plot with ggiraphdf&lt;-Teams%&gt;%filter(yearID==1980)%&gt;%select(name,HR)%&gt;%arrange(desc(HR))df$name = factor(df$name,levels=df$name)g&lt;-ggplot()&#43;geom_bar_interactive(data=df,aes(x=name,y=HR,tooltip=HR,data_id=name),stat = &quot;identity&quot;,color=&quot;white&quot;,fill=&quot;black&quot;)&#43;coord_flip()&#43;ggtitle(&quot;1980 Team Homeruns&quot;)&#43;xlab(&quot;Team Name&quot;)&#43;ylab(&quot;Homeruns&quot;)ggiraph(code = print(g),hover_css = &quot;fill-opacity:.3;cursor:pointer;&quot;){&#34;x&#34;:{&#34;html&#34;:&#34;\n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Milwaukee Brewers\n \n \n New York Yankees\n \n \n Boston Red Sox\n \n \n Baltimore Orioles\n \n \n Los Angeles Dodgers\n \n \n Atlanta Braves\n \n \n Detroit Tigers\n \n \n Oakland Athletics\n \n \n Toronto Blue Jays\n \n \n Texas Rangers\n \n \n Philadelphia Phillies\n \n \n Pittsburgh Pirates\n \n \n Kansas City Royals\n \n \n Montreal Expos\n \n \n Cincinnati Reds\n \n \n Chicago Cubs\n \n \n California Angels\n \n \n Seattle Mariners\n \n \n St.">
+    
+    
+
+    
+    
+
+    
+      <meta property="og:image" content="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=640">
+    
+
+    
+    
+    
+
+    
+
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.css" integrity="sha256-vuXZ9LGmmwtjqFX1F+EKin1ThZMub58gKULUyf0qECk=" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.css" integrity="sha256-SEa4XYAHihTcEP1f5gARTB2K26Uk8PsndQYHQC1f4jU=" crossorigin="anonymous" />
+    
+    
+    <link rel="stylesheet" href="/css/style-fpbzgxsy0kgmdvyrj5ykkg6ratccrk3gocmaqn4xpcjywmv5dteilzucro4f.min.css" />
+    
+    
+
+    
+      
+    
+    
+  </head>
+
+  <body>
+    <div id="blog">
+      <header id="header" data-behavior="4">
+  <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+  <div class="header-title">
+    <a class="header-title-link" href="/">Data Science Blog</a>
+  </div>
+  
+    
+      <a class="header-right-picture "
+         href="/#about">
+    
+    
+    
+      
+        <img class="header-picture" src="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=90" alt="Author&#39;s picture" />
+      
+    
+    </a>
+  
+</header>
+
+      <nav id="sidebar" data-behavior="4">
+  <div class="sidebar-container">
+    
+      <div class="sidebar-profile">
+        <a href="/#about">
+          <img class="sidebar-profile-picture" src="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+        </a>
+        <h4 class="sidebar-profile-name">Akhilesh Atluri</h4>
+        
+          <h5 class="sidebar-profile-bio">Master&rsquo;s in Data Science</h5>
+        
+      </div>
+    
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+      
+      <span class="sidebar-button-desc">Home</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/categories">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+      
+      <span class="sidebar-button-desc">Categories</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="/#about">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+      
+      <span class="sidebar-button-desc">About</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://facebook.com/akhileshatluri">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-facebook"></i>
+      
+      <span class="sidebar-button-desc">Facebook</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://github.com/akkiatluri">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+      
+      <span class="sidebar-button-desc">GitHub</span>
+    </a>
+  </li>
+
+  <li class="sidebar-button">
+    
+      <a class="sidebar-button-link " href="https://instagram.com/akkiatluri">
+    
+      <i class="sidebar-button-icon fa fa-lg fa-instagram"></i>
+      
+      <span class="sidebar-button-desc">Instagram</span>
+    </a>
+  </li>
+
+
+    </ul>
+    <ul class="sidebar-buttons">
+      
+
+    </ul>
+  </div>
+</nav>
+
+      
+
+      <div id="main" data-behavior="4"
+        class="
+               hasCoverMetaIn
+               ">
+        <article class="post" itemscope itemType="http://schema.org/BlogPosting">
+          
+          
+            <div class="post-header main-content-wrap text-left">
+  
+    <h1 class="post-title" itemprop="headline">
+      Plotting in R
+    </h1>
+  
+  
+  <div class="postShorten-meta post-meta">
+    
+      <time itemprop="datePublished" datetime="2017-10-04T00:00:00Z">
+        
+  October 4, 2017
+
+      </time>
+    
+    
+
+  </div>
+
+</div>
+          
+          <div class="post-content markdown" itemprop="articleBody">
+            <div class="main-content-wrap">
+              <script src="/rmarkdown-libs/htmlwidgets/htmlwidgets.js"></script>
+<script src="/rmarkdown-libs/d3/d3.min.js"></script>
+<script src="/rmarkdown-libs/d3-lasso/d3-lasso.min.js"></script>
+<link href="/rmarkdown-libs/ggiraph/styles.css" rel="stylesheet" />
+<script src="/rmarkdown-libs/ggiraph-binding/ggiraph.js"></script>
+<script src="/rmarkdown-libs/uidd195eb22a8c611e7990707d9e60305fd/scripts_uidd195eb22a8c611e7990707d9e60305fd.js"></script>
+
+
+<pre class="r"><code>library(dplyr)
+library(Lahman)
+library(ggplot2)
+library(ggiraph)</code></pre>
+<div id="histogram" class="section level2">
+<h2>Histogram</h2>
+<pre class="r"><code>df&lt;-Master%&gt;%
+  filter(!is.na(weight))%&gt;%
+  select(weight)
+
+plot = ggplot()+
+  geom_histogram(data=df,aes(x=weight),color=&quot;white&quot;,fill=&quot;blue&quot;,bins=25)+
+  ggtitle(&quot;Baseball player weights&quot;)
+plot</code></pre>
+<p><img src="/post/plotting_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
+<div id="barplot" class="section level3">
+<h3>Barplot</h3>
+<pre class="r"><code>df&lt;-Teams%&gt;%
+  filter(yearID==1980)%&gt;%
+  select(teamID,HR)
+
+plot2&lt;-ggplot()+
+  geom_bar(data = df,aes(x=reorder(teamID,HR),y=HR),stat = &quot;identity&quot;,color=&quot;blue&quot;,fill=&quot;white&quot;)+coord_flip()
+plot2</code></pre>
+<p><img src="/post/plotting_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
+</div>
+<div id="bar-plot-with-ggiraph" class="section level3">
+<h3>Bar plot with ggiraph</h3>
+<pre class="r"><code>df&lt;-Teams%&gt;%
+  filter(yearID==1980)%&gt;%
+  select(name,HR)%&gt;%
+  arrange(desc(HR))
+df$name = factor(df$name,levels=df$name)
+
+g&lt;-ggplot()+
+  geom_bar_interactive(data=df,aes(x=name,y=HR,tooltip=HR,data_id=name),stat = &quot;identity&quot;,color=&quot;white&quot;,fill=&quot;black&quot;)+coord_flip()+
+  ggtitle(&quot;1980 Team Homeruns&quot;)+xlab(&quot;Team Name&quot;)+ylab(&quot;Homeruns&quot;)
+
+ggiraph(code = print(g),hover_css = &quot;fill-opacity:.3;cursor:pointer;&quot;)</code></pre>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="ggiraph html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"html":"<div id='uidd195eb22a8c611e7990707d9e60305fd' class='ggiraph-container' ><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<svg xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" id=\"svg_1\" viewBox=\"0 0 432.00 432.00\" class=\"svg-responsive-container\">\n  <g>\n    <defs>\n      <clipPath id=\"cl1_0\">\n        <rect x=\"0.00\" y=\"432.00\" width=\"0.00\" height=\"0.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <rect x=\"0.00\" y=\"0.00\" width=\"432.00\" height=\"432.00\" id=\"1\" clip-path=\"url(#cl1_0)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"0.75\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n    <defs>\n      <clipPath id=\"cl1_1\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"432.00\" height=\"432.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <rect x=\"0.00\" y=\"0.00\" width=\"432.00\" height=\"432.00\" id=\"2\" clip-path=\"url(#cl1_1)\" fill=\"#FFFFFF\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"round\"/>\n    <defs>\n      <clipPath id=\"cl1_2\">\n        <rect x=\"109.96\" y=\"21.51\" width=\"316.56\" height=\"380.15\"/>\n      <\/clipPath>\n    <\/defs>\n    <rect x=\"109.96\" y=\"21.51\" width=\"316.56\" height=\"380.15\" id=\"3\" clip-path=\"url(#cl1_2)\" fill=\"#EBEBEB\" fill-opacity=\"1\" stroke=\"none\"/>\n    <polyline points=\"159.79,401.66 159.79,21.51\" id=\"4\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"0.533489\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"230.67,401.66 230.67,21.51\" id=\"5\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"0.533489\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"301.55,401.66 301.55,21.51\" id=\"6\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"0.533489\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"372.44,401.66 372.44,21.51\" id=\"7\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"0.533489\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,392.95 426.52,392.95\" id=\"8\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,378.44 426.52,378.44\" id=\"9\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,363.93 426.52,363.93\" id=\"10\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,349.42 426.52,349.42\" id=\"11\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,334.91 426.52,334.91\" id=\"12\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,320.40 426.52,320.40\" id=\"13\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,305.89 426.52,305.89\" id=\"14\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,291.38 426.52,291.38\" id=\"15\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,276.87 426.52,276.87\" id=\"16\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,262.37 426.52,262.37\" id=\"17\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,247.86 426.52,247.86\" id=\"18\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,233.35 426.52,233.35\" id=\"19\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,218.84 426.52,218.84\" id=\"20\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,204.33 426.52,204.33\" id=\"21\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,189.82 426.52,189.82\" id=\"22\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,175.31 426.52,175.31\" id=\"23\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,160.80 426.52,160.80\" id=\"24\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,146.29 426.52,146.29\" id=\"25\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,131.78 426.52,131.78\" id=\"26\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,117.27 426.52,117.27\" id=\"27\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,102.76 426.52,102.76\" id=\"28\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,88.25 426.52,88.25\" id=\"29\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,73.74 426.52,73.74\" id=\"30\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,59.23 426.52,59.23\" id=\"31\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,44.72 426.52,44.72\" id=\"32\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"109.96,30.21 426.52,30.21\" id=\"33\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"124.35,401.66 124.35,21.51\" id=\"34\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"195.23,401.66 195.23,21.51\" id=\"35\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"266.11,401.66 266.11,21.51\" id=\"36\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"337.00,401.66 337.00,21.51\" id=\"37\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"407.88,401.66 407.88,21.51\" id=\"38\" clip-path=\"url(#cl1_2)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"386.42\" width=\"287.78\" height=\"13.06\" id=\"39\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"371.91\" width=\"267.94\" height=\"13.06\" id=\"40\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"357.40\" width=\"229.66\" height=\"13.06\" id=\"41\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"342.89\" width=\"221.15\" height=\"13.06\" id=\"42\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"328.38\" width=\"209.81\" height=\"13.06\" id=\"43\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"313.87\" width=\"204.14\" height=\"13.06\" id=\"44\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"299.36\" width=\"202.72\" height=\"13.06\" id=\"45\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"284.86\" width=\"194.22\" height=\"13.06\" id=\"46\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"270.35\" width=\"178.62\" height=\"13.06\" id=\"47\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"255.84\" width=\"175.79\" height=\"13.06\" id=\"48\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"241.33\" width=\"165.86\" height=\"13.06\" id=\"49\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"226.82\" width=\"164.45\" height=\"13.06\" id=\"50\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"212.31\" width=\"163.03\" height=\"13.06\" id=\"51\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"197.80\" width=\"161.61\" height=\"13.06\" id=\"52\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"183.29\" width=\"160.19\" height=\"13.06\" id=\"53\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"168.78\" width=\"151.69\" height=\"13.06\" id=\"54\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"154.27\" width=\"150.27\" height=\"13.06\" id=\"55\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"139.76\" width=\"147.44\" height=\"13.06\" id=\"56\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"125.25\" width=\"143.18\" height=\"13.06\" id=\"57\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"110.74\" width=\"140.35\" height=\"13.06\" id=\"58\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"96.23\" width=\"129.01\" height=\"13.06\" id=\"59\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"81.72\" width=\"126.17\" height=\"13.06\" id=\"60\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"67.21\" width=\"113.41\" height=\"13.06\" id=\"61\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"52.70\" width=\"106.32\" height=\"13.06\" id=\"62\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"38.19\" width=\"94.98\" height=\"13.06\" id=\"63\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <rect x=\"124.35\" y=\"23.68\" width=\"86.48\" height=\"13.06\" id=\"64\" clip-path=\"url(#cl1_2)\" fill=\"#000000\" fill-opacity=\"1\" stroke-width=\"1.06698\" stroke=\"#FFFFFF\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <defs>\n      <clipPath id=\"cl1_3\">\n        <rect x=\"0.00\" y=\"0.00\" width=\"432.00\" height=\"432.00\"/>\n      <\/clipPath>\n    <\/defs>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"27.00\" y=\"396.17\" id=\"65\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Milwaukee Brewers<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"28.49\" y=\"381.66\" id=\"66\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">New York Yankees<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"39.99\" y=\"367.15\" id=\"67\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Boston Red Sox<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"36.01\" y=\"352.64\" id=\"68\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Baltimore Orioles<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"18.97\" y=\"338.13\" id=\"69\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Los Angeles Dodgers<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"46.50\" y=\"323.62\" id=\"70\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Atlanta Braves<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"51.02\" y=\"309.11\" id=\"71\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Detroit Tigers<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"34.99\" y=\"294.60\" id=\"72\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Oakland Athletics<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"32.49\" y=\"280.09\" id=\"73\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Toronto Blue Jays<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"44.00\" y=\"265.58\" id=\"74\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Texas Rangers<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"24.98\" y=\"251.07\" id=\"75\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Philadelphia Phillies<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"34.00\" y=\"236.57\" id=\"76\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Pittsburgh Pirates<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"27.00\" y=\"222.06\" id=\"77\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Kansas City Royals<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"42.50\" y=\"207.55\" id=\"78\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Montreal Expos<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"42.00\" y=\"193.04\" id=\"79\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Cincinnati Reds<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"48.50\" y=\"178.53\" id=\"80\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Chicago Cubs<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"36.99\" y=\"164.02\" id=\"81\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">California Angels<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"39.50\" y=\"149.51\" id=\"82\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Seattle Mariners<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"29.49\" y=\"135.00\" id=\"83\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">St. Louis Cardinals<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"37.50\" y=\"120.49\" id=\"84\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Minnesota Twins<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"28.49\" y=\"105.98\" id=\"85\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Chicago White Sox<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"33.48\" y=\"91.47\" id=\"86\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Cleveland Indians<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"18.99\" y=\"76.96\" id=\"87\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">San Francisco Giants<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"43.50\" y=\"62.45\" id=\"88\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">Houston Astros<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"31.98\" y=\"47.94\" id=\"89\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">San Diego Padres<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"44.01\" y=\"33.43\" id=\"90\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">New York Mets<\/text>\n    <\/g>\n    <polyline points=\"107.22,392.95 109.96,392.95\" id=\"91\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,378.44 109.96,378.44\" id=\"92\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,363.93 109.96,363.93\" id=\"93\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,349.42 109.96,349.42\" id=\"94\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,334.91 109.96,334.91\" id=\"95\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,320.40 109.96,320.40\" id=\"96\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,305.89 109.96,305.89\" id=\"97\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,291.38 109.96,291.38\" id=\"98\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,276.87 109.96,276.87\" id=\"99\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,262.37 109.96,262.37\" id=\"100\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,247.86 109.96,247.86\" id=\"101\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,233.35 109.96,233.35\" id=\"102\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,218.84 109.96,218.84\" id=\"103\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,204.33 109.96,204.33\" id=\"104\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,189.82 109.96,189.82\" id=\"105\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,175.31 109.96,175.31\" id=\"106\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,160.80 109.96,160.80\" id=\"107\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,146.29 109.96,146.29\" id=\"108\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,131.78 109.96,131.78\" id=\"109\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,117.27 109.96,117.27\" id=\"110\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,102.76 109.96,102.76\" id=\"111\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,88.25 109.96,88.25\" id=\"112\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,73.74 109.96,73.74\" id=\"113\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,59.23 109.96,59.23\" id=\"114\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,44.72 109.96,44.72\" id=\"115\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"107.22,30.21 109.96,30.21\" id=\"116\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"124.35,404.40 124.35,401.66\" id=\"117\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"195.23,404.40 195.23,401.66\" id=\"118\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"266.11,404.40 266.11,401.66\" id=\"119\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"337.00,404.40 337.00,401.66\" id=\"120\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <polyline points=\"407.88,404.40 407.88,401.66\" id=\"121\" clip-path=\"url(#cl1_3)\" fill=\"none\" stroke-width=\"1.06698\" stroke=\"#333333\" stroke-opacity=\"1\" stroke-linejoin=\"round\" stroke-linecap=\"butt\"/>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"121.85\" y=\"413.03\" id=\"122\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">0<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"190.23\" y=\"413.03\" id=\"123\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">50<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"258.61\" y=\"413.03\" id=\"124\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">100<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"329.49\" y=\"413.03\" id=\"125\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">150<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"400.37\" y=\"413.03\" id=\"126\" font-size=\"6.60pt\" fill=\"#4D4D4D\" fill-opacity=\"1\" font-family=\"Arial\">200<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"242.87\" y=\"426.38\" id=\"127\" font-size=\"8.25pt\" font-family=\"Arial\">Homeruns<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text transform=\"translate(13.35,241.84) rotate(-90)\" id=\"128\" font-size=\"8.25pt\" font-family=\"Arial\">Team Name<\/text>\n    <\/g>\n    <g clip-path=\"url(#cl1_3)\">\n      <text x=\"109.96\" y=\"14.79\" id=\"129\" font-size=\"9.90pt\" font-family=\"Arial\">1980 Team Homeruns<\/text>\n    <\/g>\n  <\/g>\n<\/svg>\n<div class='ggiraph-toolbar'><div class='ggiraph-toolbar-block shinyonly'><a class='ggiraph-toolbar-icon neutral' title='lasso selection' href='javascript:lasso_on(\"uidd195eb22a8c611e7990707d9e60305fd\", true, \"array_selected_uidd195eb22a8c611e7990707d9e60305fd\", \"clicked_uidd195eb22a8c611e7990707d9e60305fd\");'><svg width='1.5em' height='1.5em' viewBox='0 0 230 230'><g><ellipse ry='65.5' rx='86.5' cy='94' cx='115.5' stroke-width='20' fill='transparent'/><ellipse ry='11.500001' rx='10.5' cy='153' cx='91.5' stroke-width='20' fill='transparent'/><line y2='210.5' x2='105' y1='164.5' x1='96' stroke-width='20'/><\/g><\/svg><\/a><a class='ggiraph-toolbar-icon drop' title='lasso anti-selection' href='javascript:lasso_on(\"uidd195eb22a8c611e7990707d9e60305fd\", false, \"array_selected_uidd195eb22a8c611e7990707d9e60305fd\", \"clicked_uidd195eb22a8c611e7990707d9e60305fd\");'><svg width='1.5em' height='1.5em' viewBox='0 0 230 230'><g><ellipse ry='65.5' rx='86.5' cy='94' cx='115.5' stroke-width='20' fill='transparent'/><ellipse ry='11.500001' rx='10.5' cy='153' cx='91.5' stroke-width='20' fill='transparent'/><line y2='210.5' x2='105' y1='164.5' x1='96' stroke-width='20'/><\/g><\/svg><\/a><\/div><\/div><style>div.tooltip_uidd195eb22a8c611e7990707d9e60305fd {position:absolute;pointer-events:none;z-index:999;padding:5px;background:black;color:white;border-radius:2px 2px 2px 2px;}\n.cl_data_id_uidd195eb22a8c611e7990707d9e60305fd:{}.cl_data_id_uidd195eb22a8c611e7990707d9e60305fd:hover{fill-opacity:.3;cursor:pointer;}\n.clicked_uidd195eb22a8c611e7990707d9e60305fd{fill-opacity:.3;cursor:pointer;}<\/style><\/div>","uid":"uidd195eb22a8c611e7990707d9e60305fd","funname":"init_prop_uidd195eb22a8c611e7990707d9e60305fd","sel_array_name":"array_selected_uidd195eb22a8c611e7990707d9e60305fd","selected_class":"clicked_uidd195eb22a8c611e7990707d9e60305fd","tooltip_opacity":0.9,"tooltip_offx":10,"tooltip_offy":0,"zoom_max":1,"use_wh":false,"width":"80%","selection_type":"multiple","flexdashboard":false},"evals":[],"jsHooks":[]}</script>
+<pre class="r"><code>g</code></pre>
+<p><img src="/post/plotting_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
+</div>
+</div>
+
+              
+            </div>
+          </div>
+          <div id="post-footer" class="post-footer main-content-wrap">
+            
+              
+            
+            
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                <i class="fa fa-angle-left"></i>
+                <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+              </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2017/10/plotting/" data-tooltip="plotting">
+              
+                <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                <i class="fa fa-angle-right"></i>
+              </a>
+            </li>
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2017/10/plotting/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2017/10/plotting/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2017/10/plotting/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+            
+              
+                <div id="disqus_thread">
+  <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+              
+            
+          </div>
+        </article>
+        <footer id="footer" class="main-content-wrap">
+  <span class="copyrights">
+    &copy; 2017 Akhilesh Atluri. All Rights Reserved
+  </span>
+</footer>
+
+      </div>
+      <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
+        
+  <div class="post-actions-wrap">
+      <nav >
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--disabled">
+              
+                <i class="fa fa-angle-left"></i>
+                <span class="hide-xs hide-sm text-small icon-ml">NEXT</span>
+              </a>
+            </li>
+            <li class="post-action">
+              
+                <a class="post-action-btn btn btn--default tooltip--top" href="/2017/10/plotting/" data-tooltip="plotting">
+              
+                <span class="hide-xs hide-sm text-small icon-mr">PREVIOUS</span>
+                <i class="fa fa-angle-right"></i>
+              </a>
+            </li>
+        </ul>
+      </nav>
+    <ul class="post-actions post-action-share" >
+      
+        <li class="post-action hide-lg hide-md hide-sm">
+          <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
+            <i class="fa fa-share-alt"></i>
+          </a>
+        </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=/2017/10/plotting/">
+              <i class="fa fa-facebook-official"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=/2017/10/plotting/">
+              <i class="fa fa-twitter"></i>
+            </a>
+          </li>
+        
+          <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=/2017/10/plotting/">
+              <i class="fa fa-google-plus"></i>
+            </a>
+          </li>
+        
+      
+      
+        <li class="post-action">
+          <a class="post-action-btn btn btn--default" href="#disqus_thread">
+            <i class="fa fa-comment-o"></i>
+          </a>
+        </li>
+      
+      <li class="post-action">
+        
+          <a class="post-action-btn btn btn--default" href="#">
+        
+          <i class="fa fa-list"></i>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+
+      </div>
+      <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+  <i id="btn-close-shareoptions" class="fa fa-close"></i>
+  <ul class="share-options">
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=%2F2017%2F10%2Fplotting%2F">
+          <i class="fa fa-facebook-official"></i><span>Share on Facebook</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=%2F2017%2F10%2Fplotting%2F">
+          <i class="fa fa-twitter"></i><span>Share on Twitter</span>
+        </a>
+      </li>
+    
+      <li class="share-option">
+        <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=%2F2017%2F10%2Fplotting%2F">
+          <i class="fa fa-google-plus"></i><span>Share on Google&#43;</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+    </div>
+    
+    <div id="about">
+  <div id="about-card">
+    <div id="about-btn-close">
+      <i class="fa fa-remove"></i>
+    </div>
+    
+      <img id="about-card-picture" src="//www.gravatar.com/avatar/d09dc2d7aa5c467519e8af89f7b3d94c?s=110" alt="Author&#39;s picture" />
+    
+    <h4 id="about-card-name">Akhilesh Atluri</h4>
+    
+      <div id="about-card-bio">Master&rsquo;s in Data Science</div>
+    
+    
+      <div id="about-card-job">
+        <i class="fa fa-briefcase"></i>
+        <br/>
+        Student
+      </div>
+    
+    
+      <div id="about-card-location">
+        <i class="fa fa-map-marker"></i>
+        <br/>
+        USA
+      </div>
+    
+  </div>
+</div>
+
+    <div id="algolia-search-modal" class="modal-container">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="close-button"><i class="fa fa-close"></i></span>
+      <a href="https://algolia.com" target="_blank" rel="noopener" class="searchby-algolia text-color-light link-unstyled">
+        <span class="searchby-algolia-text text-color-light text-small">by</span>
+        <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+      </a>
+      <i class="search-icon fa fa-search"></i>
+      <form id="algolia-search-form">
+        <input type="text" id="algolia-search-input" name="search"
+          class="form-control input--large search-input" placeholder="Search" />
+      </form>
+    </div>
+    <div class="modal-body">
+      <div class="no-result text-color-light text-center">no post found</div>
+      <div class="results">
+        
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/10/plotting/">
+                <h3 class="media-heading">Plotting in R</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">library(dplyr)library(Lahman)library(ggplot2)library(ggiraph)Histogramdf&lt;-Master%&gt;%filter(!is.na(weight))%&gt;%select(weight)plot = ggplot()+geom_histogram(data=df,aes(x=weight),color=&quot;white&quot;,fill=&quot;blue&quot;,bins=25)+ggtitle(&quot;Baseball player weights&quot;)plotBarplotdf&lt;-Teams%&gt;%filter(yearID==1980)%&gt;%select(teamID,HR)plot2&lt;-ggplot()+geom_bar(data = df,aes(x=reorder(teamID,HR),y=HR),stat = &quot;identity&quot;,color=&quot;blue&quot;,fill=&quot;white&quot;)+coord_flip()plot2Bar plot with ggiraphdf&lt;-Teams%&gt;%filter(yearID==1980)%&gt;%select(name,HR)%&gt;%arrange(desc(HR))df$name = factor(df$name,levels=df$name)g&lt;-ggplot()+geom_bar_interactive(data=df,aes(x=name,y=HR,tooltip=HR,data_id=name),stat = &quot;identity&quot;,color=&quot;white&quot;,fill=&quot;black&quot;)+coord_flip()+ggtitle(&quot;1980 Team Homeruns&quot;)+xlab(&quot;Team Name&quot;)+ylab(&quot;Homeruns&quot;)ggiraph(code = print(g),hover_css = &quot;fill-opacity:.3;cursor:pointer;&quot;){"x":{"html":"\n\n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n \n Milwaukee Brewers\n \n \n New York Yankees\n \n \n Boston Red Sox\n \n \n Baltimore Orioles\n \n \n Los Angeles Dodgers\n \n \n Atlanta Braves\n \n \n Detroit Tigers\n \n \n Oakland Athletics\n \n \n Toronto Blue Jays\n \n \n Texas Rangers\n \n \n Philadelphia Phillies\n \n \n Pittsburgh Pirates\n \n \n Kansas City Royals\n \n \n Montreal Expos\n \n \n Cincinnati Reds\n \n \n Chicago Cubs\n \n \n California Angels\n \n \n Seattle Mariners\n \n \n St.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/10/plotting/">
+                <h3 class="media-heading">plotting</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/2017/09/rmarkdown/">
+                <h3 class="media-heading">Baseball</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Sep 9, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather">Baseball
+The packages required to run the codelibrary(Lahman)library(dplyr)Selecting a particular Column in the dataframenow , suppose we would like to see the homerun totals for the 1927 new york yankees. we could run the following code
+Batting%&gt;%select(playerID,yearID,teamID,HR)%&gt;%filter(teamID==&quot;NYA&quot; &amp; yearID==1927)## playerID yearID teamID HR## 1 beallwa01 1927 NYA 0## 2 bengobe01 1927 NYA 0## 3 collipa01 1927 NYA 7## 4 combsea01 1927 NYA 6## 5 duganjo01 1927 NYA 2## 6 durstce01 1927 NYA 0## 7 gazelmi01 1927 NYA 0## 8 gehrilo01 1927 NYA 47## 9 giardjo01 1927 NYA 0## 10 grabojo01 1927 NYA 0## 11 hoytwa01 1927 NYA 0## 12 koenima01 1927 NYA 3## 13 lazzeto01 1927 NYA 18## 14 meusebo01 1927 NYA 8## 15 moorewi01 1927 NYA 1## 16 morehra01 1927 NYA 1## 17 paschbe01 1927 NYA 2## 18 pennohe01 1927 NYA 0## 19 pipgrge01 1927 NYA 1## 20 ruethdu01 1927 NYA 1## 21 ruthba01 1927 NYA 60## 22 shawkbo01 1927 NYA 0## 23 shockur01 1927 NYA 0## 24 thomamy01 1927 NYA 0## 25 weraju01 1927 NYA 1Arranging a Column in Descending OrderNow,the following code gives the list of all the players that have scored more than 40 homeruns from New York Yankees Team.</div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+          <div class="media">
+            
+            <div class="media-body">
+              <a class="link-unstyled" href="/post/">
+                <h3 class="media-heading">Posts</h3>
+              </a>
+              <span class="media-meta">
+                <span class="media-date text-small">
+                  Oct 10, 2017
+                </span>
+              </span>
+              <div class="media-content hide-xs font-merryweather"></div>
+            </div>
+            <div style="clear:both;"></div>
+            <hr>
+          </div>
+        
+      </div>
+    </div>
+    <div class="modal-footer">
+      <p class="results-count text-medium"
+         data-message-zero="no post found"
+         data-message-one="1 post found"
+         data-message-other="{n} posts found">
+         4 posts found
+      </p>
+    </div>
+  </div>
+</div>
+    
+  
+    
+    <div id="cover" style="background-image:url('/images/cover.jpg');"></div>
+  
+
+
+    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" integrity="sha256-IFHWFEbU2/+wNycDECKgjIRSirRNIDp2acEB5fvdVRU=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.8.0/highlight.min.js" integrity="sha256-+mpyNVJsNt4rVXCw0F+pAOiB3YxmHgrbJsx4ecPuUaI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/jquery.fancybox.min.js" integrity="sha256-vMxgR/7FtLovVA+IPrR7+xTgIgARH7y9VZQnmmi0HDI=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/2.1.4/helpers/jquery.fancybox-thumbs.min.js" integrity="sha256-N0qFUh7/9vLvia87dDndewmsgsyYoNkdA212tPc+2NI=" crossorigin="anonymous"></script>
+
+
+<script src="/js/script-qi9wbxp2ya2j6p7wx1i6tgavftewndznf4v0hy2gvivk1rxgc3lm7njqb6bz.min.js"></script>
+
+
+<script>
+$(document).ready(function() {
+  hljs.configure({ classPrefix: '', useBR: false });
+  $('pre.code-highlight, pre > code').each(function(i, block) {
+    if (!$(this).hasClass('codeblock')) {
+      $(this).addClass('codeblock');
+    }
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+
+  
+    
+      <script>
+        var disqus_config = function () {
+          this.page.url = '\/2017\/10\/plotting\/';
+          
+            this.page.identifier = '\/2017\/10\/plotting\/'
+          
+        };
+        (function() {
+          
+          
+          if (window.location.hostname == "localhost") {
+            return;
+          }
+          var d = document, s = d.createElement('script');
+          var disqus_shortname = 'Data wrangling and Plotting in R';
+          s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+
+          s.setAttribute('data-timestamp', +new Date());
+          (d.head || d.body).appendChild(s);
+        })();
+      </script>
+    
+  
+
+
+
+    
+  </body>
+</html>
+

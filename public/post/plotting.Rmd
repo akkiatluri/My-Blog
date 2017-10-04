@@ -1,0 +1,62 @@
+---
+title: Plotting in R
+author: ~
+date: '2017-10-04'
+slug: plotting
+categories: []
+tags: []
+---
+
+
+
+```{r message=FALSE, warning=FALSE}
+library(dplyr)
+library(Lahman)
+library(ggplot2)
+library(ggiraph)
+```
+
+## Histogram
+
+```{r message=FALSE, warning=FALSE}
+df<-Master%>%
+  filter(!is.na(weight))%>%
+  select(weight)
+
+plot = ggplot()+
+  geom_histogram(data=df,aes(x=weight),color="white",fill="blue",bins=25)+
+  ggtitle("Baseball player weights")
+plot
+```
+
+### Barplot
+
+```{r}
+df<-Teams%>%
+  filter(yearID==1980)%>%
+  select(teamID,HR)
+
+plot2<-ggplot()+
+  geom_bar(data = df,aes(x=reorder(teamID,HR),y=HR),stat = "identity",color="blue",fill="white")+coord_flip()
+plot2
+```
+
+### Bar plot with  ggiraph
+
+```{r}
+df<-Teams%>%
+  filter(yearID==1980)%>%
+  select(name,HR)%>%
+  arrange(desc(HR))
+df$name = factor(df$name,levels=df$name)
+
+g<-ggplot()+
+  geom_bar_interactive(data=df,aes(x=name,y=HR,tooltip=HR,data_id=name),stat = "identity",color="white",fill="black")+coord_flip()+
+  ggtitle("1980 Team Homeruns")+xlab("Team Name")+ylab("Homeruns")
+
+ggiraph(code = print(g),hover_css = "fill-opacity:.3;cursor:pointer;")
+
+g
+
+```
+
